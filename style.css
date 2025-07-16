@@ -1,0 +1,186 @@
+/* styles.css */
+
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0eebc6;
+    margin: 0;
+    padding: 0;
+}
+
+
+.sb-nav-fixed .sb-topnav {
+    background-color: #003C43;
+    color: white;
+
+}
+
+.sb-topnav a.navbar-brand {
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration:none;
+}
+
+.sb-topnav .btn-link {
+    color: rgb(13, 127, 165);
+}
+
+.sb-sidenav {
+    background-color: #003C43;
+    color:#E3FEF7;
+}
+
+.sb-sidenav .nav-link {
+    color: #77B0AA;
+    padding: 10px 15px;
+    display: block;
+    text-decoration: #e4eae8;
+}
+
+.sb-sidenav .nav-link:hover {
+    background-color: #0b1f22;
+    color:#F6F4F0;
+    border: 1px solid #dee2e6;
+}
+
+.sb-sidenav .sb-sidenav-footer {
+    background-color: #212529;
+    color: #adb5bd;
+    padding: 10px;
+    text-align: center;
+}
+
+.container-fluid h1 {
+    font-size: 1.75rem;
+    color: #01070c;
+}
+
+.breadcrumb {
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    margin: 0;
+    border-radius: 0.25rem;
+}
+
+.card {
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #343a40;
+    color: white;
+    font-weight: bold;
+    
+}
+
+.card-header .btn {
+    background-color: #006A67;
+    border: none;
+    color: white;
+    font-size: 14px;
+    
+    
+    
+}
+
+.card-header .btn:hover {
+    background-color: #00CCDD;
+    
+}
+
+.card-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.card-body table th,
+.card-body table td {
+    border: 1px solid #dee2e6;
+    padding: 8px;
+    text-align: left;
+}
+
+.card-body table th {
+    background-color: #77B0AA;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-color: #117a8b;
+    border-style:solid;
+}
+
+.card-body table td button {
+    font-size: 14px;
+    margin-right: 5px;
+    padding: 5px 10px;
+}
+
+.card-body table td .btn-warning {
+    background-color: #ffc107;
+    color: black;
+}
+
+.card-body table td .btn-warning:hover {
+    background-color: #e0a800;
+}
+
+.card-body table td .btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.card-body table td .btn-danger:hover {
+    background-color: #b52a37;
+}
+
+.card-body table td .btn-info {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.card-body table td .btn-info:hover {
+    background-color: #117a8b;
+}
+
+/* Modal Styles */
+.modal-header {
+    background-color: #05586b;
+    color: rgb(248, 252, 253);
+    border-bottom: none;
+}
+
+.modal-title {
+    font-size: 18px;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-body input.form-control {
+    margin-bottom: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+/* Footer */
+footer {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 14px;
+}
+
+footer a {
+    color: #ff0044;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
