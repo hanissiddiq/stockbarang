@@ -23,10 +23,31 @@ if (isset($_POST['daftarakun'])) {
     $cek->bind_param("s", $email);
     $cek->execute();
     $cek->store_result();
+
+    //perubahan awal
+    // if ($cek->num_rows > 0) {
+    //     echo "<script>alert('Email sudah terdaftar.'); window.location='akun.php';</script>";
+    //     exit;
+    // }
+
     if ($cek->num_rows > 0) {
-        echo "<script>alert('Email sudah terdaftar.'); window.location='akun.php';</script>";
-        exit;
-    }
+    echo "
+    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Email sudah terdaftar!',
+                text: 'Silakan gunakan email lain atau login jika sudah punya akun.',
+                confirmButtonText: 'OK',
+                allowOutsideClick: false
+            }).then(() => {
+                window.location.href = 'akun.php';
+            });
+        });
+    </script>";
+    exit;
+}
 
     // Hash password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -42,11 +63,13 @@ if (isset($_POST['daftarakun'])) {
     if ($stmt->execute()) {
         // Kirim Email Verifikasi
         $mail = new PHPMailer(true);
+		$mail->SMTPDebug = 2; // atau 3 untuk lebih detail
+		$mail->Debugoutput = 'html';
         try {
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = 'riskazahara43@gmail.com'; // Ganti dengan email kamu
+             $mail->Username = 'riskazahara43@gmail.com'; // Ganti dengan email kamu
             $mail->Password = 'xoqdxoeafpbnhkem'; // Ganti dengan App Password dari Gmail
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
@@ -62,7 +85,22 @@ if (isset($_POST['daftarakun'])) {
                 <p>Jika Anda tidak merasa melakukan pendaftaran, silakan abaikan email ini.</p>";
 
             $mail->send();
-            echo "<script>alert('Pendaftaran berhasil! Silakan cek email Anda untuk verifikasi.'); window.location='akun.php';</script>";
+            // echo "<script>alert('Pendaftaran berhasil! Silakan cek email Anda untuk verifikasi.'); window.location='verifikasi-page.php';</script>";
+            echo "
+    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Verifikasi Email!',
+                text: 'Pendaftaran berhasil! Silakan cek email Anda untuk verifikasi.',
+                confirmButtonText: 'OK',
+                allowOutsideClick: false
+            }).then(() => {
+                window.location.href = 'verifikasi-page.php';
+            });
+        });
+    </script>";
         } catch (Exception $e) {
             echo "Gagal mengirim email verifikasi: {$mail->ErrorInfo}";
         }
@@ -88,6 +126,7 @@ if (isset($_POST['daftarakun'])) {
     <!-- <link href="stylee.css" rel="stylesheet" /> -->
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="">
 <style>
     body {
