@@ -315,11 +315,11 @@ if(isset($_POST['updatebarang'])){
     $idbarang = $_POST['idbarang'];
     $namabarang = $_POST['namabarang'];
     $deskripsi = $_POST['deskripsi'];
-    $stock = $_POST['stock'];
+    $stok_awal = $_POST['stok_awal'];
     $satuan = $_POST['satuan'];
     $hargabarang = $_POST['hargabarang'];
 
-    $update = mysqli_query($conn,"update stock set namabarang='$namabarang', deskripsi='$deskripsi', stock='$stock', satuan='$satuan', hargabarang='$hargabarang' WHERE idbarang='$idbarang'");
+    $update = mysqli_query($conn,"update stock set namabarang='$namabarang', deskripsi='$deskripsi', stok_awal='$stok_awal', satuan='$satuan', hargabarang='$hargabarang' WHERE idbarang='$idbarang'");
     if($update){
         // header('location:keluar.php');
         header ('location: index.php');

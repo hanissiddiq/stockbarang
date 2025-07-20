@@ -23,31 +23,10 @@ if (isset($_POST['daftarakun'])) {
     $cek->bind_param("s", $email);
     $cek->execute();
     $cek->store_result();
-
-    //perubahan awal
-    // if ($cek->num_rows > 0) {
-    //     echo "<script>alert('Email sudah terdaftar.'); window.location='akun.php';</script>";
-    //     exit;
-    // }
-
     if ($cek->num_rows > 0) {
-    echo "
-    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Email sudah terdaftar!',
-                text: 'Silakan gunakan email lain atau login jika sudah punya akun.',
-                confirmButtonText: 'OK',
-                allowOutsideClick: false
-            }).then(() => {
-                window.location.href = 'akun.php';
-            });
-        });
-    </script>";
-    exit;
-}
+        echo "<script>alert('Email sudah terdaftar.'); window.location='akun.php';</script>";
+        exit;
+    }
 
     // Hash password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -63,13 +42,11 @@ if (isset($_POST['daftarakun'])) {
     if ($stmt->execute()) {
         // Kirim Email Verifikasi
         $mail = new PHPMailer(true);
-		$mail->SMTPDebug = 2; // atau 3 untuk lebih detail
-		$mail->Debugoutput = 'html';
         try {
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-             $mail->Username = 'riskazahara43@gmail.com'; // Ganti dengan email kamu
+            $mail->Username = 'riskazahara43@gmail.com'; // Ganti dengan email kamu
             $mail->Password = 'xoqdxoeafpbnhkem'; // Ganti dengan App Password dari Gmail
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
@@ -81,26 +58,20 @@ if (isset($_POST['daftarakun'])) {
             $mail->Body = "
                 <p>Halo <strong>$namalengkap</strong>,</p>
                 <p>Terima kasih telah mendaftar. Silakan klik link berikut untuk verifikasi akun Anda:</p>
-                <p><a href='http://localhost/stockbarang/login.php?email=$email&token=$token'>Verifikasi Sekarang</a></p>
+                <p><a href='http://stockbarang.test/verify.php?email=$email&token=$token'>Verifikasi Sekarang</a></p>
                 <p>Jika Anda tidak merasa melakukan pendaftaran, silakan abaikan email ini.</p>";
 
             $mail->send();
-            // echo "<script>alert('Pendaftaran berhasil! Silakan cek email Anda untuk verifikasi.'); window.location='verifikasi-page.php';</script>";
-            echo "
-    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Verifikasi Email!',
-                text: 'Pendaftaran berhasil! Silakan cek email Anda untuk verifikasi.',
-                confirmButtonText: 'OK',
-                allowOutsideClick: false
-            }).then(() => {
-                window.location.href = 'verifikasi-page.php';
-            });
-        });
-    </script>";
+            // echo "<script>alert('Pendaftaran berhasil! Silakan cek email Anda untuk verifikasi.'); window.location='login.php';</script>";
+             $alert = "<script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Registrasi berhasil!',
+                        text: 'Silakan cek email Anda untuk melakukan verifikasi.'
+                    });
+                });
+            </script>";
         } catch (Exception $e) {
             echo "Gagal mengirim email verifikasi: {$mail->ErrorInfo}";
         }
@@ -258,6 +229,7 @@ function togglePassword() {
     }
 }
 </script>
+<?= $alert ?? '' ?>
 
 </body>
 </html>
