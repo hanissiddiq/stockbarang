@@ -1,5 +1,7 @@
 <?php
+
 require 'function.php';
+
 
 if (isset($_POST['Login'])) {
     $email = trim($_POST['email']);
@@ -36,6 +38,7 @@ if (isset($_POST['Login'])) {
         if (password_verify($password, $user['password'])) {
             session_start();
             $_SESSION['log'] = 'True';
+			$_SESSION['login'] = 'True';
             $_SESSION['posisi'] = $user['posisi'];
             $_SESSION['namalengkap'] = $user['namalengkap'];
 
@@ -225,7 +228,7 @@ if (isset($_POST['Login'])) {
                                                 type="password" placeholder="Password" required />
                                             <label for="inputPassword">Password</label>
                                             <button type="button" class="password-toggle" onclick="togglePassword()">
-                                                <i class="fa fa-eye" id="toggleIcon" onclick="togglePassword()"></i>
+                                                <i class="fa fa-eye" id="eyeIcon" onclick="togglePassword()"></i>
 
                                             </button>
                                         </div>

@@ -1,9 +1,6 @@
 <?php
 require 'function.php';
-require 'vendor/autoload.php'; // pastikan composer autoload dimuat
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+require 'vendor/autoload.php'; // untuk library lainnya jika dibutuhkan
 
 if (isset($_POST['daftarakun'])) {
     $namalengkap = trim($_POST['nama_lengkap']);
@@ -11,11 +8,10 @@ if (isset($_POST['daftarakun'])) {
     $password = $_POST['password'];
     $alamat = trim($_POST['alamat']); 
 
-    // Sanitasi nomor HP: hanya angka yang diizinkan
+    // Sanitasi nomor HP
     $no_hp = trim($_POST['no_hp']);
     $no_hp = preg_replace('/[^0-9]/', '', $no_hp); 
 
-    // Posisi langsung ditentukan sebagai "karyawan"
     $posisi = "karyawan";
 
     // Cek email sudah terdaftar
@@ -40,30 +36,40 @@ if (isset($_POST['daftarakun'])) {
     $stmt->bind_param("sssssss", $namalengkap, $email, $hashedPassword, $alamat, $no_hp, $posisi, $token);
 
     if ($stmt->execute()) {
-        // Kirim Email Verifikasi
-        $mail = new PHPMailer(true);
-        try {
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'riskazahara43@gmail.com'; // Ganti dengan email kamu
-            $mail->Password = 'xoqdxoeafpbnhkem'; // Ganti dengan App Password dari Gmail
-            $mail->SMTPSecure = 'tls';
-            $mail->Port = 587;
+        // === Kirim Email Verifikasi dengan Mailgun ===
+        $apiKey = 'd5fabeae9667d2b8d0a93763faef4ab2-45de04af-ea4cfa83';
+        $domain = 'sandbox906b844468c14c5ba04c9c4c39de84dc.mailgun.org';
 
-            $mail->setFrom('riskazahara43@gmail.com', 'Toko Barokah');
-            $mail->addAddress($email, $namalengkap);
-            $mail->isHTML(true);
-            $mail->Subject = 'Verifikasi Email Anda - Toko Barokah';
-            $mail->Body = "
-                <p>Halo <strong>$namalengkap</strong>,</p>
-                <p>Terima kasih telah mendaftar. Silakan klik link berikut untuk verifikasi akun Anda:</p>
-                <p><a href='http://stockbarang.test/verify.php?email=$email&token=$token'>Verifikasi Sekarang</a></p>
-                <p>Jika Anda tidak merasa melakukan pendaftaran, silakan abaikan email ini.</p>";
+        $verifyLink = "http://stockbarang.test/verify.php?email=$email&token=$token";
+        $subject = 'Verifikasi Email Anda - Toko Barokah';
+        $text = "Halo $namalengkap, silakan klik link berikut untuk verifikasi akun Anda: $verifyLink";
+        $html = "
+            <p>Halo <strong>$namalengkap</strong>,</p>
+            <p>Terima kasih telah mendaftar. Silakan klik link berikut untuk verifikasi akun Anda:</p>
+            <p><a href='$verifyLink'>Verifikasi Sekarang</a></p>
+            <p>Jika Anda tidak merasa melakukan pendaftaran, silakan abaikan email ini.</p>";
 
-            $mail->send();
-            // echo "<script>alert('Pendaftaran berhasil! Silakan cek email Anda untuk verifikasi.'); window.location='login.php';</script>";
-             $alert = "<script>
+        // cURL kirim via Mailgun
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($ch, CURLOPT_USERPWD, "api:$apiKey");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_URL, "https://api.mailgun.net/v3/$domain/messages");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, [
+            'from'    => "Toko Barokah <noreply@$domain>",
+            'to'      => $email,
+            'subject' => $subject,
+            'text'    => $text,
+            'html'    => $html
+        ]);
+
+        $result = curl_exec($ch);
+        $httpStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($httpStatus == 200) {
+            echo "<script>
                 document.addEventListener('DOMContentLoaded', function() {
                     Swal.fire({
                         icon: 'success',
@@ -72,9 +78,10 @@ if (isset($_POST['daftarakun'])) {
                     });
                 });
             </script>";
-        } catch (Exception $e) {
-            echo "Gagal mengirim email verifikasi: {$mail->ErrorInfo}";
+        } else {
+            echo "Gagal mengirim email. Respon dari Mailgun:<br><pre>$result</pre>";
         }
+
     } else {
         echo 'Gagal menyimpan ke database: ' . $stmt->error;
     }

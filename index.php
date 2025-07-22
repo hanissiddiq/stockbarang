@@ -1,5 +1,14 @@
 <?php
 require 'function.php';
+session_start();
+
+// $cek = $_SESSION['login'];
+// echo $cek;
+// Cek apakah pengguna sudah login
+if (!isset($_SESSION['login'])) {
+    header("Location: login.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>

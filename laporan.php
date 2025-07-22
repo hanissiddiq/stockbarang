@@ -11,8 +11,10 @@ $lihatSemua = isset($_GET['all']) && $_GET['all'] === '1';
 $filterTanggalMasuk = $filterTanggalKeluar = '';
 if (!$lihatSemua && !empty($tanggal)) {
     $tanggalEscaped = mysqli_real_escape_string($koneksi, $tanggal);
-    $filterTanggalMasuk = "AND DATE(m.tanggal) = '$tanggalEscaped'";
-    $filterTanggalKeluar = "AND DATE(k.tanggal) = '$tanggalEscaped'";
+    // $filterTanggalMasuk = "AND DATE(m.tanggal) = '$tanggalEscaped'";
+    $filterTanggalMasuk = "AND DATE(tanggal) = '$tanggalEscaped'";
+    // $filterTanggalKeluar = "AND DATE(k.tanggal) = '$tanggalEscaped'";
+    $filterTanggalKeluar = "AND DATE(tanggal) = '$tanggalEscaped'"; 
 }
 $filterNama = (!$lihatSemua && !empty($nama)) ? "WHERE s.namabarang LIKE '%" . mysqli_real_escape_string($koneksi, $nama) . "%'" : '';
 

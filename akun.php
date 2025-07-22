@@ -1,5 +1,11 @@
 ]<?php
 require 'function.php';
+
+// Cek apakah pengguna sudah login dan punya role pemilik
+if (!isset($_SESSION['login']) || $_SESSION['posisi'] !== 'pemilik') {
+    header("Location: login.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
