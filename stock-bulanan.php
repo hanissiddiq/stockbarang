@@ -65,7 +65,7 @@ if (!isset($_SESSION['login'])) {
                         <div class="sb-nav-link-icon"><i class="fa-notdog fa-solid fa-file"></i></div>
                         Stok Bulanan
                     </a>
-                    <a class="nav-link" href="laporan-penjualan.php">
+                     <a class="nav-link" href="laporan-penjualan.php">
                         <div class="sb-nav-link-icon"><i class="fas fa-chart-bar"></i></div>
                         Laporan Penjualan
                     </a>
@@ -87,21 +87,21 @@ if (!isset($_SESSION['login'])) {
             <div class="container-fluid px-4">
                 <h1 class="mt-4 text-center">STOK BARANG</h1>
                 <div class="card mb-4">
-                    <div class="card-header">
+                    <!-- <div class="card-header">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
                             TAMBAH BARANG
                         </button>
-                    </div>
+                    </div> -->
                     <div class="card-body">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Barang</th>
                                     <th>Kode Barang</th>
+                                    <th>Nama Barang</th>
                                     <th>Deskripsi</th>
-                                    <th>Stok Awal</th>
-                                    <th>Sisa Barang</th>
+                                    <!-- <th>Stok Awal</th> -->
+                                    <th>Stock</th>
                                     <th>Satuan</th>
                                     <th>Harga Barang</th>
                                     <th>Harga Total</th>
@@ -157,10 +157,10 @@ if (!isset($_SESSION['login'])) {
 
                     <tr>
                         <td><?= $i++; ?></td>
-                        <td><?= htmlspecialchars($namabarang); ?></td>
                         <td><?= $idbarang; ?></td>
+                        <td><?= htmlspecialchars($namabarang); ?></td>
                         <td><?= htmlspecialchars($deskripsi); ?></td>
-                        <td><?= $stok_awal_riil; ?></td>
+                        
                         <td><?= $stock; ?></td>
                         <td><?= $satuan; ?></td>
                         <td><?= $hargabarang_rupiah; ?></td>
@@ -195,17 +195,12 @@ if (!isset($_SESSION['login'])) {
                                                         
                                                         <label for="satuan"></label>
                                                             <select name="satuan" id="satuan" class="form-select" required>
-                                                               <option value="" disabled selected>Satuan</option>
-                                                                <option value="kardus" <?= ($satuan == "kardus") ? "selected" : ""; ?>>Kardus</option>
-                                                                <option value="box" <?= ($satuan == "box") ? "selected" : ""; ?>>Box</option>
-                                                                <option value="pcs" <?= ($satuan == "pcs") ? "selected" : ""; ?>>Pcs</option>
-                                                                <option value="lusin" <?= ($satuan == "lusin") ? "selected" : ""; ?>>Lusin</option>
-                                                                <option value="rim" <?= ($satuan == "rim") ? "selected" : ""; ?>>Rim</option>
-                                                                <!-- <option value="kardus">Kardus</option>
+                                                                <option value="" disabled selected>Satuan</option>
+                                                                <option value="kardus">Kardus</option>
                                                                 <option value="box">Box</option>
                                                                 <option value="pcs">Pcs</option>
                                                                 <option value="lusin">Lusin</option>
-                                                                <option value="rim">Rim</option> -->
+                                                                <option value="rim">Rim</option>
                                                             </select>
                                                             <br>
                                                         <input type="number" name="hargabarang" value="<?= $hargabarang; ?>" class="form-control" required><br>

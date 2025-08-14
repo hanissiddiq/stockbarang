@@ -100,6 +100,7 @@ if (isset($_POST['addnewbarangoperator'])) {
 
 
 if (isset($_POST['barangmasuk1'])) {
+// if (isset($_POST['barangbaruK'])) {
    // Pastikan koneksi disertakan
 
     // Ambil dan validasi input
@@ -107,6 +108,13 @@ if (isset($_POST['barangmasuk1'])) {
     $jumlah = intval($_POST['jumlah'] ?? 0);
     $keterangan = htmlspecialchars($_POST['keterangan'] ?? '');
     $tanggal = date('Y-m-d H:i:s');
+
+    // echo 'id Barang ='. $idbarang;
+    // echo '</br>';
+    // echo 'jumlah ='.$jumlah;
+    // echo '</br>';
+    // echo 'pj ='.$keterangan;
+    
 
     if ($idbarang <= 0 || $jumlah <= 0 || empty($keterangan)) {
         echo "<script>alert('Data tidak valid. Pastikan semua diisi dengan benar.');</script>";
@@ -141,11 +149,50 @@ if (isset($_POST['barangmasuk1'])) {
         VALUES ('$idbarang', '$tanggal', '$jumlah', '$keterangan')
     ");
 
-    if ($update && $insert) {
-        echo "<script>alert('Barang masuk berhasil dicatat!'); window.location.href='masuk.php';</script>";
-    } else {
-        echo "<script>alert('Gagal mencatat barang masuk!');</script>";
+    //Kode Dasar
+    // if ($update && $insert) {
+    //     echo "<script>alert('Barang masuk berhasil dicatat!'); window.location.href='masuk.php';</script>";
+    // } else {
+    //     echo "<script>alert('Gagal mencatat barang masuk!');</script>";
+    // }
+
+    //try catch bock for sweetalert
+
+    try {
+        $alert = "
+        <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+        <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Barang masuk berhasil dicatat!.'
+                    });
+                });
+            </script>";        
+    } catch (Exception $e) {
+        $alert = "
+    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: 'Gagal mencatat barang masuk!',
+            confirmButtonText: 'Coba Lagi'
+        });
+    </script>
+    ";
     }
+
+
+    $alert ?? '' ;
+    // Kode dengan SweetAlert
+    if ($update && $insert) {
+    echo $alert ?? '' ;
+    } else {
+    echo $alert ?? '' ;
+    }
+
 }
 
 
@@ -315,16 +362,46 @@ if(isset($_POST['updatebarang'])){
     $idbarang = $_POST['idbarang'];
     $namabarang = $_POST['namabarang'];
     $deskripsi = $_POST['deskripsi'];
-    $stok_awal = $_POST['stok_awal'];
+    $stok_awal = $_POST['stokawal'];
     $satuan = $_POST['satuan'];
     $hargabarang = $_POST['hargabarang'];
 
     $update = mysqli_query($conn,"update stock set namabarang='$namabarang', deskripsi='$deskripsi', stok_awal='$stok_awal', satuan='$satuan', hargabarang='$hargabarang' WHERE idbarang='$idbarang'");
+    // $alertsuccess = "<script>alert('Barang berhasil diupdate!'); window.location.href='index.php';</script>";
+    try {
+            $alertupdate = "
+            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Barang berhasil diupdate!'
+                        });
+                    });
+                </script>";        
+        } catch (Exception $e) {
+            $alertupdate = "
+        <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: 'Gagal Update Barang!',
+                confirmButtonText: 'Coba Lagi'
+            });
+        </script>
+        ";
+        }
+    // Cek apakah update berhasil
     if($update){
-        // header('location:keluar.php');
-        header ('location: index.php');
+        //   $alertsuccess;
+        echo $alertupdate ?? '';
+        
     } else {
+        echo $alertupdate ?? '';
         echo 'gagal';
+        // header ('location: index.php');
     }
 }
  //menghapus barang stock

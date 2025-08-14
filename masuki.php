@@ -166,7 +166,8 @@ if (isset($_POST['barangbaruK'])) {
             <form method="post">
                 <div class="modal-body">
                     <!-- Pilihan barang -->
-                    <select name="barangnya" class="form-control" required>
+                    <!-- <select name="barangnya" class="form-control" required> -->
+                    <select name="idbarang" class="form-control" required>
                         <?php
                         $ambilsemuadatanya = mysqli_query($conn, "SELECT * FROM stock");
                         while ($fetcharray = mysqli_fetch_array($ambilsemuadatanya)) {
@@ -179,11 +180,12 @@ if (isset($_POST['barangbaruK'])) {
                     <br>
 
                     <!-- Quantity -->
-                    <input type="number" name="Quantity" placeholder="Quantity" class="form-control" required>
+                    <input type="number" name="jumlah" placeholder="Quantity" class="form-control" required>
                     <br>
 
                     <!-- Pilihan penanggung jawab (karyawan) -->
-                    <select name="Penerima" class="form-control" required>
+                    <!-- <select name="Penerima" class="form-control" required> -->
+                    <select name="keterangan" class="form-control" required>
                         <option value="" disabled selected>Penanggung Jawab</option>
                         <?php
                         $akun = mysqli_query($conn, "SELECT * FROM login WHERE posisi IN ('Karyawan')");
